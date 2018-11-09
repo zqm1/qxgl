@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.ssm.dao.mapper.ProjectInfoMapper">
+  <resultMap id="ProjectResultMap" type="com.web.ssm.domain.ProjectInfo">
+    <result column="id" jdbcType="BIGINT" property="id" />
+     <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="project_start_develop_time" jdbcType="TIMESTAMP" property="projectStartDevelopTime" />
+    <result column="project_end_develop_time" jdbcType="TIMESTAMP" property="projectEndDevelopTime" />
+    <result column="project_start_sit_time" jdbcType="TIMESTAMP" property="projectStartSitTime" />
+    <result column="project_end_sit_time" jdbcType="TIMESTAMP" property="projectEndSitTime" />
+    <result column="project_start_uat_time" jdbcType="TIMESTAMP" property="projectStartUatTime" />
+    <result column="project_end_uat_time" jdbcType="TIMESTAMP" property="projectEndUatTime" />
+    <result column="project_start_product_time" jdbcType="TIMESTAMP" property="projectStartProductTime" />
+	<result column="project_end_product_time" jdbcType="TIMESTAMP" property="projectEndProductTime" />
+    <result column="project_desprication" jdbcType="VARCHAR" property="projectDesprication" />
+    <result column="project_file" jdbcType="VARCHAR" property="projectFile" />
+    <result column="project_pi_process" jdbcType="VARCHAR" property="projectPiProcess" />
+    <result column="project_wso2_process" jdbcType="VARCHAR" property="projectWso2Process" />   
+  </resultMap>
+  <select id="selectProjectCounts" parameterType="com.web.ssm.domain.query.ProjectInfoQueryPara" resultMap="projectcountsResultMap">
+  select count(*) from project_info  
+  <where>
+  <if test="projectId != '' ">
+      project_id=#{projectId}
+      
+  </if>
+ <if test="projectName !=''">
+ 	and project_name=#{projectName}
+ </if>
+ </where>
+;
+  </select>
+  <!-- 分页没有实现 -->
+  <select id="searchProjectInfo" parameterType="java.lang.String" resultMap="ProjectResultMap">
+  select * from project_info where project_name like  CONCAT('%',#{search},'%');
+  </select>
+  <select id="searchProjectInfoCount" parameterType="com.web.ssm.domain.query.ProjectInfoQueryPara" resultMap="projectcountsResultMap">
+  select count(*) from project_info where project_name like CONCAT('%',#{projectName},'%');
+  </select>
+  <resultMap type="int" id="projectcountsResultMap">
+    <result column="count(*)"  property="total" />
+  </resultMap>
+  
+</mapper>
